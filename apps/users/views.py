@@ -4,6 +4,7 @@ from .serializers import LoginSerialiazer, RefreshSerialiazer, RegisterSerialize
 from rest_framework.generics import CreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from .models import User
+from utils.permission import IsSupeUser
 # Create your views here.
 
 
@@ -24,5 +25,6 @@ class RegisterView(CreateAPIView):
 
 class UserViewSet(ModelViewSet):
     """用户视图集"""
-    serializer_class = UserSerializer
-    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer   # 序列化器
+    queryset = User.objects.all().order_by('-date_joined')   # 数据库数据和排序
+    permission_classes = [IsSupeUser]   # 权限控制

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'rest_framework',
     'rest_framework_simplejwt',  # jwt插件
+    'projects.apps.ProjectsConfig'
 ]
 
 MIDDLEWARE = [
