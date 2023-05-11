@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .models import Project, Environment
-from .serializers import ProjectSerializer, EnvironmentSerializer
+from .models import Project, Environment, Module, Interface
+from .serializers import ProjectSerializer, EnvironmentSerializer, ModuleSerializer, InterfaceSerializer
 from rest_framework.permissions import IsAuthenticated
-from utils.permission import EnvPermission
+from utils.permission import EnvPermission, ModulePermission, InterfacePermission
 
 
 # Create your views here.
@@ -39,13 +39,47 @@ class EnvironmentViewSet(ModelViewSet):
     # 过滤对应项目的环境，只显示当前项目的环境
     def get_queryset(self):
         queryset = super().get_queryset()
-        project = self.request.query_params.get('project')
-        if project:
-            queryset = queryset.filter(project=project)
+        project_id = self.request.query_params.get('project')
+        if project_id:
+            queryset = queryset.filter(project=project_id)
         return queryset
 
     # 当为post的时候，不会校验权限，需要主动走权限流程
     def create(self, request, *args, **kwargs):
         self.check_object_permissions(request, None)
-        super().create(self, request, *args, **kwargs)
+        return super().create(self, request, *args, **kwargs)
+
+
+class ModuleViewSet(ModelViewSet):
+    serializer_class = ModuleSerializer
+    queryset = Module.objects.all()
+    permission_classes = [IsAuthenticated, ModulePermission]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        project_id = self.request.query_params.get('project')
+        if project_id:
+            queryset = queryset.filter(project=project_id)
+        return queryset
+
+    def create(self, request, *args, **kwargs):
+        self.check_object_permissions(request, None)
+        return super().create(request, *args, **kwargs)
+
+
+class InterfaceViewSet(ModelViewSet):
+    serializer_class = InterfaceSerializer
+    queryset = Interface.objects.all()
+    permission_classes = [IsAuthenticated, InterfacePermission]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        module_id = self.request.query_params.get('module')
+        if module_id:
+            queryset = queryset.filter(module=module_id)
+        return queryset
+
+    def create(self, request, *args, **kwargs):
+        self.check_object_permissions(request, None)
+        return super().create(request, *args, **kwargs)
 

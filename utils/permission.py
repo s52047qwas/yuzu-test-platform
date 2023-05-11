@@ -2,7 +2,7 @@
 权限控制
 """
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from projects.models import Project
+from projects.models import Project, Module
 
 
 class IsSupeUser(BasePermission):
@@ -59,3 +59,17 @@ class EnvPermission(IsSuperOrReadOnly):
     #
     #     return False
 
+
+class ModulePermission(EnvPermission):
+    pass
+
+
+class InterfacePermission(IsSuperOrReadOnly):
+
+    def has_create_permission(self, request, view, obj):
+        module_id = request.data.get('module')
+        queryset = Module.objects.filter(id=module_id)
+        return bool(queryset and queryset.first().project.leader == request.user)
+
+    def has_update_delete_permission(self, request, view, obj):
+        return bool(request.user == obj.module.project.leader)

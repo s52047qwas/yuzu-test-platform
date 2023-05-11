@@ -53,3 +53,40 @@ class Environment(BaseModel):
         constraints = [
             models.UniqueConstraint(fields=['name', 'project'], name='unique_env_name')
         ]
+
+
+class Module(BaseModel):
+
+    name = models.CharField('模块名称', max_length=128, help_text='项目模块名称')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, help_text='所属项目')
+
+    def __str__(self):
+        return '{}_{}'.format(self.project.name, self.name)
+
+    class Meta:
+        db_table = 'tb_module'
+        verbose_name = '项目模块'
+        verbose_name_plural = verbose_name
+
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'project'], name='unique_module_name')
+        ]
+
+
+class Interface(BaseModel):
+    name = models.CharField('接口名称', max_length=128, help_text='接口名称')
+    url = models.CharField('接口地址', max_length=128, help_text='接口地址')
+    module = models.ForeignKey(Module, on_delete=models.PROTECT, help_text='所属模块', related_name='interfaces')
+    developer = models.CharField('所属开发人员', max_length=128, help_text='所属开发人员', default='')
+
+    def __str__(self):
+        return '{}_{}_{}'.format(self.module.project.leader, self.module.name, self.name)
+
+    class Meta:
+        db_table = 'tb_interface'
+        verbose_name = '接口模块'
+        verbose_name_plural = verbose_name
+
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'module'], name='unique_interface_name')
+        ]
