@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
     path('', include('projects.urls')),
+    path('', include('testcase.urls')),
     path('rest_framework/', include('rest_framework.urls'))   # 视图集等登录
 ]

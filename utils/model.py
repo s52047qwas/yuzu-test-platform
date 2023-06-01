@@ -1,3 +1,7 @@
+"""
+模型基类
+"""
+
 from django.db import models
 
 

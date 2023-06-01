@@ -38,14 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'corsheaders',
+    'corsheaders',   # 跨域
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
-    'rest_framework',
+    'rest_framework',   # drf
+    'django_filters',   # 过滤器
     'rest_framework_simplejwt',  # jwt插件
-    'projects.apps.ProjectsConfig'
+    'projects.apps.ProjectsConfig',
+    'testcase.apps.TestcaseConfig',
 ]
 
 MIDDLEWARE = [
@@ -181,5 +183,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',   # jwt认证方案
         'rest_framework.authentication.SessionAuthentication',   # django session认证
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS':
+        ['django_filters.rest_framework.DjangoFilterBackend']   # 过滤器启用
 }

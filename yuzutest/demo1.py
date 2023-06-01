@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 优化导入路径
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
-# print(sys.path)
+print(sys.path)
 
 car = {
   "brand": "Porsche",
