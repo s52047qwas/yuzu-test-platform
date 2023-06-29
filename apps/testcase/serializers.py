@@ -1,13 +1,33 @@
 from rest_framework import serializers
 
-from .models import Task, TestSuite
+from .models import Task, TestSuite, TestCase
 from rest_framework.validators import UniqueTogetherValidator
 
 from rest_framework.exceptions import ValidationError
 from projects.models import Project
 
 
+class TestCaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TestCase
+        exclude = ['is_delete', 'u_time']  # 不显示的字段
+
+        def validate(self, attrs):
+            # 验证选择的接口是不是当前项目的接口
+            interface = attrs.get('interface')
+            test_suit = attrs.get('test_suit')
+            if interface.module.project != test_suit.task.project:
+                raise ValidationError('数据错误！')
+
+        # 手写联合唯一校验
+        validators = [
+            UniqueTogetherValidator(queryset=model.objects.all(), fields=['title', 'test_suit'])
+        ]
+
+
 class TestSuitSerializer(serializers.ModelSerializer):
+    testcases = TestCaseSerializer(many=True, read_only=True)
 
     class Meta:
         model = TestSuite
@@ -48,13 +68,3 @@ class TaskSerializer(serializers.ModelSerializer):
         return value
 
 
-class TestSuitSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = TestSuite
-        exclude = ['is_delete', 'u_time']  # 不显示的字段
-
-        # 手写联合唯一校验
-        validators = [
-            UniqueTogetherValidator(queryset=model.objects.all(), fields=['name', 'task'])
-        ]

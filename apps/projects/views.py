@@ -47,7 +47,7 @@ class EnvironmentViewSet(ModelViewSet):
     # 当为post的时候，不会校验权限，需要主动走权限流程
     def create(self, request, *args, **kwargs):
         self.check_object_permissions(request, None)
-        return super().create(self, request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
 
 class ModuleViewSet(ModelViewSet):
@@ -72,12 +72,15 @@ class InterfaceViewSet(ModelViewSet):
     queryset = Interface.objects.all()
     permission_classes = [IsAuthenticated, InterfacePermission]
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        module_id = self.request.query_params.get('module')
-        if module_id:
-            queryset = queryset.filter(module=module_id)
-        return queryset
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     module_id = self.request.query_params.get('module')
+    #     if module_id:
+    #         queryset = queryset.filter(module=module_id)
+    #     return queryset
+
+    def get_object(self):
+        return super(EnvironmentViewSet, self).get_object()
 
     def create(self, request, *args, **kwargs):
         self.check_object_permissions(request, None)

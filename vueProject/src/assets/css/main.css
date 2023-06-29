@@ -1,0 +1,13 @@
+body{
+    margin: 0;
+    min-width: 1000px;
+}
+
+/*用例管理菜单按钮样式*/
+.case_list .el-submenu .el-menu-item,
+.case_list .el-submenu .el-submenu__title{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 45px;
+    min-width: 150px;
+}
