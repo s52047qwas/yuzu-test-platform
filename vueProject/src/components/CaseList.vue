@@ -14,9 +14,9 @@
           </template>
             <el-submenu :index="sui.name" v-for="sui in task.test_suits">
               <template #title>{{sui.name}}</template>
-              <el-menu-item :index="1-4-1">
-                <el-tooltip class="box-item" effect="dark" content="Right Center prompts info" placement="right">
-                  <span>三级菜单</span>
+              <el-menu-item :index="testcase.title" v-for="testcase in sui.testcases">
+                <el-tooltip class="box-item" effect="dark" :content="testcase.title" placement="right">
+                  <span>{{testcase.title}}</span>
                 </el-tooltip>
               </el-menu-item>
 

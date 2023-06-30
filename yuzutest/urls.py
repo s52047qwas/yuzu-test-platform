@@ -21,5 +21,6 @@ urlpatterns = [
     path('user/', include('users.urls')),
     path('', include('projects.urls')),
     path('', include('testcase.urls')),
-    path('rest_framework/', include('rest_framework.urls'))   # 视图集等登录
+    path('rest_framework/', include('rest_framework.urls')),   # 视图集等登录
+    path('request/', include('requestset.urls'))
 ]
