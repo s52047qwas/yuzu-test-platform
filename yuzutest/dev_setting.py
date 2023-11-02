@@ -13,11 +13,11 @@ ALLOWED_HOSTS = []
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yuzu_test_platform',
+        'NAME': 'test_platform',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '120.25.76.157',
-        'PORT': '3306',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
